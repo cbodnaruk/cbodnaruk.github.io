@@ -246,7 +246,7 @@ var tabledata = [
       Ego2: "",
       Eng2: "",
       Mir2: "+",
-      Term_source: "\"Terminal Suffix\", descriptions but no terms,
+      Term_source: "\"Terminal Suffix\", descriptions but no terms",
       AP_interrogative: "/",
       AP_declarative: "+ counterexpective? [161]",
       Diachronic: "/",
