@@ -1,4 +1,4 @@
-import {Tabulator} from 'tabulator-tables';
+import {Tabulator} from 'https://unpkg.com/tabulator-tables@6.2.1/dist/js/tabulator_esm.min.js';
 
 var tabledata = [
     {
