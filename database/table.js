@@ -1,4 +1,3 @@
-import {Tabulator} from 'https://unpkg.com/tabulator-tables@6.2.1/dist/js/tabulator_esm.min.js';
 
 var tabledata = [
     {
@@ -2240,44 +2239,128 @@ var tabledata = [
       Mixed_Paradigm: "",
       Nominal_Engagement: "",
       Thesis: ""
-    },
-    {
-      Language: ""
     }
   ]
 
-var table = new Tabulator("#database_table", {
-    height:205, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
+  window.addEventListener("load", function() {
+$("#single_language").hide()
+table = new Tabulator("#database_table", {
+     // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
     data:tabledata, //assign data to table
+    height:500,
     layout:"fitColumns", //fit columns to width of table (optional)
     columns:[ //Define Table Columns
+        {title:"Language Metadata",
+            columns:[
         {title:"Language", field:"Language"},
         {title:"Subfamily", field:"Subfamily"},
-        {title:"Coordinates", field:"Coordinates"},
+        {title:"Source", field:"Source"},
+        {title:"Coordinates", field:"Coordinates"},]},
+
         {title:"Evidence of epistemic marking", field:"Any_Marking"},
+        {title:"Scope and Form",
+            columns:[
         {title:"Verb Morphology", field:"Verb_Morphology"},
         {title:"Noun Phrase", field:"Noun_Phrase"},
         {title:"Verb Phrase", field:"Verb_Phrase"},
-        {title:"Discourse particle/speech act level", field:"Discourse_particle"},
+        {title:"Discourse particle/speech act level", field:"Discourse_particle"},]},
+        {title:"Functions of Markings: Canonical",
+            columns:[
         {title:"EM", field:"EM1"},
         {title:"Ev", field:"Ev1"},
         {title:"Ego", field:"Ego1"},
         {title:"Eng", field:"Eng1"},
         {title:"Mir", field:"Mir1"},
-        {title:"Other", field:"Other1"},
+        {title:"Other", field:"Other1"},]},
+        {title:"Functions of Markings: Non-Canonical",
+            columns:[
         {title:"EM", field:"EM2"},
         {title:"Ev", field:"Ev2"},
         {title:"Ego", field:"Ego2"},
         {title:"Eng", field:"Eng2"},
-        {title:"Mir", field:"Mir2"},
+        {title:"Mir", field:"Mir2"},]},
         {title:"Term(s) used in source", field:"Term_source"},
+        {title:"Addressee Perspective",
+            columns:[
         {title:"Evidence of AP in interrogative structures?", field:"AP_interrogative"},
-        {title:"Evidence of AP in declarative structures?", field:"AP_declarative"},
+        {title:"Evidence of AP in declarative structures?", field:"AP_declarative"},]},
+        {title:"Other Features",
+            columns:[
         {title:"Diachronic Source?", field:"Diachronic"},
         {title:"Obligatory", field:"Obligatory"},
         {title:"Mixed Paradigm", field:"Mixed_Paradigm"},
         {title:"Nominal Engagement", field:"Nominal_Engagement"},
-        {title:"Other notes", field:"Notes"}
-
+        {title:"Other notes", field:"Notes"}]}
     ],
 });
+table.on("rowDblClick", function(e, row){
+    //e - the click event object
+    //row - row component
+    console.log("double clicked on " + row.getData().Language)
+hideview();
+    var output = Object.entries(row.getData()).map(([key, value]) => ({key,value}));
+    var transposed = []
+    for (let i = 0; i < output.length; i++){
+        transposed[i] = {key: "", value: ""}
+        field_names.forEach(field => {
+            if (output[i].key == field.field){ 
+            transposed[i].key = field.title}
+        }   );
+        transposed[i].value = output[i].value
+        console.log(transposed[i]);
+}
+
+
+    var table2 = new Tabulator("#sl_table", {
+       height:500, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
+       data:transposed, //assign data to table
+       layout:"fitDataTable", //fit columns to width of table (optional)
+    columns: [
+        {title: "Attribute", field: "key"},
+        {title: "Value", field: "value"}
+    ]})
+
+
+});
+
+
+},false);
+
+function hideview(){
+    console.log("toggling")
+    $("#database_table").css("display", "none");
+    $("#single_language").css("display", "inline");
+}
+function showmain(){
+    $("#database_table").css("display", "");
+    $("#single_language").css("display", "none");
+}
+const field_names = [
+{title:"Language", field:"Language"},
+{title:"Subfamily", field:"Subfamily"},
+{title:"Source", field:"Source"},
+{title:"Coordinates", field:"Coordinates"},
+{title:"Evidence of epistemic marking", field:"Any_Marking"},
+{title:"Verb Morphology", field:"Verb_Morphology"},
+{title:"Noun Phrase", field:"Noun_Phrase"},
+{title:"Verb Phrase", field:"Verb_Phrase"},
+{title:"Discourse particle/speech act level", field:"Discourse_particle"},
+{title:"EM", field:"EM1"},
+{title:"Ev", field:"Ev1"},
+{title:"Ego", field:"Ego1"},
+{title:"Eng", field:"Eng1"},
+{title:"Mir", field:"Mir1"},
+{title:"Other", field:"Other1"},
+{title:"EM", field:"EM2"},
+{title:"Ev", field:"Ev2"},
+{title:"Ego", field:"Ego2"},
+{title:"Eng", field:"Eng2"},
+{title:"Mir", field:"Mir2"},
+{title:"Term(s) used in source", field:"Term_source"},
+{title:"Evidence of AP in interrogative structures?", field:"AP_interrogative"},
+{title:"Evidence of AP in declarative structures?", field:"AP_declarative"},
+{title:"Diachronic Source?", field:"Diachronic"},
+{title:"Obligatory", field:"Obligatory"},
+{title:"Mixed Paradigm", field:"Mixed_Paradigm"},
+{title:"Nominal Engagement", field:"Nominal_Engagement"},
+{title:"Other notes", field:"Notes"}]

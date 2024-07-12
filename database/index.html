@@ -3,13 +3,20 @@
     <head>
         <title>TH Epistemic Database</title>
     </head>
-    <link href="https://unpkg.com/tabulator-tables@6.2.1/dist/css/tabulator.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/tabulator-tables@6.2.1/dist/css/tabulator_midnight.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
  <script type="text/javascript" type="module" src="https://unpkg.com/tabulator-tables@6.2.1/dist/js/tabulator.min.js"></script>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
  <script  src="table.js"></script>
 <body>
-<h1>Hello</h1>
-<p>The database will go here.</p>
+<h1>TH Epistemic Database v1</h1>
+<p>This is a database of summaries of epistemic marking systems in Trans-Himalayan languages. This is a living project that I will continue to update and add to as time goes on. For any errors or corrections, please email me. Double clicking on a row below will being up a table with only the data from that language for ease of reading. Please do not cite this database - use the references provided to find the original data and analysis.</p>
+<p>Carl Bodnaruk</p>
 <div id="database_table"></div>
+<div id="single_language">
+    <div><button onclick="showmain()">Back</button></div>
+    <div id="sl_table"></div>
+</div>
+<footer>Copyright 2024 Carl Bodnaruk</footer>
 </body>
 </html>
