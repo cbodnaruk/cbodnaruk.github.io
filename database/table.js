@@ -2244,6 +2244,8 @@ var tabledata = [
 
   window.addEventListener("load", function() {
 $("#single_language").hide()
+var columnwide = []
+var defwidth = 0
 table = new Tabulator("#database_table", {
      // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
     data:tabledata, //assign data to table
@@ -2293,6 +2295,9 @@ table = new Tabulator("#database_table", {
         {title:"Other notes", field:"Notes"}]}
     ],
 });
+table.on("tableBuilt", function(){
+    defwidth = table.getColumns()[1].getWidth();
+});
 table.on("rowDblClick", function(e, row){
     //e - the click event object
     //row - row component
@@ -2322,7 +2327,18 @@ hideview();
 
 
 });
+table.on("cellClick", function(e, cell){
+    
+    var column = cell.getColumn();
+    if (columnwide.includes(column.getField())){
+column.setWidth(defwidth)
+columnwide.splice(columnwide.indexOf(column.getField()),1)
+    } else {
+    column.setWidth(true);
+    columnwide.push(column.getField())
+}
 
+})
 
 },false);
 
