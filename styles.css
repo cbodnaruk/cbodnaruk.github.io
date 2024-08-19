@@ -88,10 +88,12 @@ body {
         text-align: left;
     }
 }
+
 .ref{
     padding-left: 2em;
     text-indent:-2em;
 }
+
 a.material-symbols-outlined{
     text-indent: 0em;
     text-decoration: none;
