@@ -88,9 +88,7 @@ img {
     padding: 1%;
     border: #777 1px solid;
 }
-.photo{
-    width: 140px;
-}
+
 @media screen and (min-width: 600px) {
     .content {
         flex-direction: row-reverse;
@@ -102,6 +100,9 @@ img {
     }
     .sidebar{
         flex-direction: column;
+    }
+    .photo{
+        min-width: 7vw;
     }
 }
 
@@ -123,10 +124,11 @@ img {
         width: 35vw;
     }
     .photo{
-        min-width: 30%;
-        max-width: 140px;
+        min-width: 50%;
+        max-width: 20vw;
         
     }
+
 }
 
 
