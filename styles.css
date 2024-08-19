@@ -77,8 +77,20 @@ height: 100vh;
 .sidebar {
     text-align: right;
     margin-left: 5%;
+    display: flex;
+
 }
 
+img {
+    height: auto;
+    width: 100%;
+    border-radius: 2%;
+    padding: 1%;
+    border: #777 1px solid;
+}
+.photo{
+    width: 140px;
+}
 @media screen and (min-width: 600px) {
     .content {
         flex-direction: row-reverse;
@@ -87,6 +99,9 @@ height: 100vh;
     .main {
         width: 40%;
         min-width: 600px;
+    }
+    .sidebar{
+        flex-direction: column;
     }
 }
 
@@ -99,7 +114,18 @@ height: 100vh;
         flex-direction: column;
     }
     .sidebar {
-        text-align: center;
+        justify-content: space-between;
+        flex-direction: row;
+    }
+    .socials{
+        align-self: flex-end;
+        max-width: 160px;
+        width: 35vw;
+    }
+    .photo{
+        min-width: 30%;
+        max-width: 140px;
+        
     }
 }
 
