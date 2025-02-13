@@ -1,5 +1,5 @@
 body {
-    font-family: "Dosis", sans-serif;
+    font-family: "Dosis", "Montserrat", sans-serif;
     font-optical-sizing: auto;
     font-weight: 200;
     font-style: normal;
@@ -19,7 +19,6 @@ body {
 .main {
     margin: auto;
 background-color: whitesmoke;
-height: 100vh;
 
 }
 
@@ -83,8 +82,8 @@ height: 100vh;
 
 img {
     height: auto;
-    width: 100%;
-    border-radius: 2%;
+    width: 98%;
+    border-radius: 1em;
     padding: 1%;
     border: #777 1px solid;
 }
@@ -141,4 +140,16 @@ a.material-symbols-outlined{
     text-indent: 0em;
     text-decoration: none;
     vertical-align: middle;
+}
+
+.post{
+    width: 100%
+    background-color: whitesmoke;
+}
+
+.blogitem{
+    padding: 3%;
+    border: 1px black solid;
+    display: flex;
+    justify-content: space-between;
 }
