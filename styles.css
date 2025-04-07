@@ -125,23 +125,36 @@ img {
 
 @media screen and (max-width: 749px) {
     .content {
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
 
 
     .sidebar {
         justify-content: space-between;
-        flex-direction: row;
+        flex-direction: column-reverse;
     }
     .socials{
-        align-self: flex-end;
-        max-width: 160px;
-        width: 35vw;
+        align-self: center;
+        /* max-width: 160px; */
+        /* width: 35vw; */
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .socials p {
+        margin: 0;
+        padding: 0;
     }
     .photo{
-        min-width: 50%;
-        max-width: 20vw;
+        min-width: 30%;
+        max-width: 10vw;
+        align-self: center;
         
+    }
+    .header-buttons {
+        font-size: 7vw;
     }
 
 }
