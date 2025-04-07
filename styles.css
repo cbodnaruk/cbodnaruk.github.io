@@ -1,8 +1,10 @@
 body {
-    font-family: "Dosis", "Montserrat", sans-serif;
+    font-family:  "Montserrat", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 200;
+    font-weight: 300;
     font-style: normal;
+
+    background-color: whitesmoke;
 
 }
 
@@ -14,11 +16,13 @@ body {
     padding: 1%;
     text-align: center;
     background-color: white;
+    line-height: 70%;
+
 }
 
 .main {
     margin: auto;
-background-color: whitesmoke;
+    color:#333;
 
 }
 
@@ -27,12 +31,14 @@ background-color: whitesmoke;
     display: flex;
    align-items: stretch;
     text-align: right;
-    background-color: white;
+    background-color: whitesmoke;
+    border: none;
+    box-shadow: none;
 }
 
 .subheader{
-    background-color: white;
     padding-bottom: 1%;
+    padding-top: 1%;
 }
 .spacer{
     flex-grow: 1;
@@ -70,6 +76,11 @@ background-color: whitesmoke;
     padding-right: 2%;
     padding-bottom: 8%;
     display: flex;
+    background-color: white;
+        border: lightgray 1px solid;
+    border-radius: 1em;
+    box-shadow:  0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    line-height: 140%;
 
 }
 
@@ -88,14 +99,14 @@ img {
     border: #777 1px solid;
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 750px) {
     .content {
         flex-direction: row-reverse;
     }
 
     .main {
         width: 40%;
-        min-width: 600px;
+        min-width: 750px;
     }
     .sidebar{
         flex-direction: column;
@@ -104,15 +115,20 @@ img {
         min-width: 7vw;
     }
 }
+@media screen and (max-width: 1000px) {
+    .header {
+        flex-direction: column;
+    }
+}
 
-@media screen and (max-width: 599px) {
+
+
+@media screen and (max-width: 749px) {
     .content {
         flex-direction: column;
     }
 
-    .header {
-        flex-direction: column;
-    }
+
     .sidebar {
         justify-content: space-between;
         flex-direction: row;
@@ -143,8 +159,7 @@ a.material-symbols-outlined{
 }
 
 .post{
-    width: 100%
-    background-color: whitesmoke;
+    width: 100%;
 }
 
 .blogitem{
