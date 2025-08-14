@@ -5,6 +5,9 @@ body {
     font-style: normal;
 
     background-color: whitesmoke;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 
 }
 
@@ -21,9 +24,15 @@ body {
 }
 
 .main {
-    margin: auto;
     color:#333;
+    
 
+}
+
+#menu-button {
+    font-size: 2em;
+    cursor: pointer;
+    display: none;
 }
 
 .header {
@@ -34,11 +43,13 @@ body {
     background-color: whitesmoke;
     border: none;
     box-shadow: none;
+    flex-direction: column;
 }
 
 .subheader{
     padding-bottom: 1%;
-    padding-top: 1%;
+    font-size: 1rem;
+    text-align: left;
 }
 .spacer{
     flex-grow: 1;
@@ -46,7 +57,9 @@ body {
 
 .header-buttons {
     align-self: baseline;
-    
+    margin-bottom: 1%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .name {
@@ -62,7 +75,8 @@ body {
 }
 
 #this-page {
-    border-color: #333;
+    border-color: #222;
+    font-weight: 400;
 }
 
 .button:hover {
@@ -81,7 +95,12 @@ body {
     border-radius: 1em;
     box-shadow:  0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     line-height: 140%;
+}
 
+.caption {
+    font-size: 0.8em;
+    color: #777;
+    text-align: center;
 }
 
 .sidebar {
@@ -107,6 +126,7 @@ img {
     .main {
         width: 40%;
         min-width: 750px;
+        
     }
     .sidebar{
         flex-direction: column;
@@ -117,8 +137,9 @@ img {
 }
 @media screen and (max-width: 1000px) {
     .header {
-        flex-direction: column;
+        max-width: 100vw;
     }
+
 }
 
 
@@ -154,7 +175,33 @@ img {
         
     }
     .header-buttons {
-        font-size: 7vw;
+        /* font-size: 7vw; */
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 0px;
+        overflow: hidden;
+        position: absolute;
+        text-align: right;
+        width: 50vw;
+        max-width: 200px;
+        right: 10px;
+        top: 18%;
+        background-color: white;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        border-radius: 1em;
+        transition: height 0.3s ease-in, padding 0.3s step-end;
+        
+    }
+    #menu-button {
+        display: block;
+    }
+
+    .open {
+        height: 290px;
+        transition: height 0.3s ease-in-out;
+        /* overflow: visible; */
+        padding: 3%;
+        border: lightgray 1px solid;
     }
 
 }
