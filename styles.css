@@ -240,4 +240,5 @@ a.material-symbols-outlined{
     margin-top: 0;
     position: absolute;
     top: calc(8vh + 8vw);
+    font-weight: 400;
 }
