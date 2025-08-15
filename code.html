@@ -20,7 +20,7 @@
 
 <body>
 
-    <div class="main">
+    <main class="main">
         <div class="header">
             <span class="name"><strong>Carl Bodnaruk</strong></span>
             <div class="subheader">Linguist - Himalayan Languages</div>
@@ -36,51 +36,57 @@
                 <span class="button" onclick="location.href='blog'">Blog</span>
             </span>
         </div>
-
+        <h1 class="pagetitle">Coding</h1>
         <div class="content">
             <div>
                 <p>
                     In addition to my research on Himalayan languages, I also have experience in coding and software development. In particular, I have experience in web development, working with JavaScript both client-side and server-side (Node.js), as well as with SQL and AWS architectures. My portfolio includes both personal and academic work, described below. 
                 </p>
                 <p>
-                    Academically, I have used my web development background to create tools for my research, such as the database summarising epistemic marking in Trans-Himalayan languages that developed out of my doctoral research, available <a href="database">here</a>. I have also been working on a fieldwork data glossing and analysis tool as a cross-platform alternative to FLEx, which will be available in early alpha before the end of 2025.
+                    Academically, I have used my web development background to create tools for my research, such as <a href="database">the database summarising epistemic marking in Trans-Himalayan languages</a> that developed out of my doctoral research. I have also been working on a fieldwork data glossing and analysis tool as a cross-platform alternative to FLEx, which will be available in early alpha before the end of 2025.
                 </p>
                 <p>
                     My personal projects include tools to support large-scale in-person game events known as <a href="https://en.wikipedia.org/wiki/Megagame">megagames</a>, including the interactive dashboard used by <a href="https://www.sydneymegagamers.com/">Sydney Megagamers</a> and <a href="https://www.melbournemegagames.com/">Melbourne Megagames</a> for their events, such as <a href="https://www.youtube.com/watch?v=duCQwTyy0Hc">First Contact 2024</a>.
                 </p>
                 <p>
                     <h2>Academic Projects</h2>
-                    <h3>Fieldwork Data Tool</h3>
-                    This project is a cross-platform tool for fieldwork data glossing and analysis, designed to be a lightweight alternative to FLEx. It is being built on the Electron framework, allowing it to run natively on all major operating systems.
-                    <img src="code_images/fieldtool.png" alt="Screenshot of the Fieldwork Data Tool">
-                    <span class="caption">Screenshot of the tool, showing the lexicon, glossing, and integrated audiovisual support. The text here, in Chocangaca, was imported directly from ELAN, and can be exported to LaTeX, and Word formats.</span>
-
-                    <h2>Personal Projects</h2>
-                    <h3>HomeFile LAN File Transfer</h3>
-                    This is a simple web-based file transfer tool for local area networks, allowing for easy transfer of files between devices on the same network without the data leaving said network using a Node.js as a peer server and the PeerJS library for the WebRTC protocol.
-                    <img src="code_images/homefile.png" alt="Screenshot of the HomeFile LAN File Transfer tool">
-                    <span class="caption">Screenshot of the HomeFile LAN File Transfer tool, showing the file selection and transfer interface.</span>
-
-                    <h3>Megagame Dashboard</h3>
-                    This is a web-based dashboard for megagames, allowing for various game-relevant information such as clocks, newsfeeds, and stats to be displayed to players and synchronised across multiple devices. It is built with a Node.js backend with a PostgreSQL database, and a Vanilla JavaScript frontend. It is used regularly by organisations running megagames in both Sydney and Melbourne.
-                    <img src="code_images/megagame.png" class="lightbox" alt="Screenshot of the Megagame Dashboard Homepage">
-                    <span class="caption">Screenshot of the Megagame Dashboard landing page.</span>
-                    <img src="code_images/megagame2.png" alt="Screenshot of the Megagame Dashboard in use for The Lighthouse (Sydney, 2025)">
-                    <span class="caption">Screenshot of the Megagame Dashboard in use for <i>The Lighthouse</i> by David Little (Sydney, 2025), showing the game clock and custom styling.</span>
-                    <img src="code_images/megagame3.png" alt="Screenshot of the Megagame Dashboard in use for This City Sucks (Melbourne, 2024)">
-                    <span class="caption">Screenshot of the Megagame Dashboard in use for <i>This City Sucks</i> by Chris Melenhorst (Melbourne, 2024), showing the game clock, newsfeed, and custom styling.</span>
-
-                    <h3>Sydney Showdown</h3>
-                    This web-app was developed to manage a Sydney-based adaptation of the <a href="https://en.wikipedia.org/wiki/Jet_Lag:_The_Game#Season_13:_Schengen_Showdown"><i>Jet Lag the Game: Schengen Showdown</i> web series</a>. It uses a serverless Lambda-based architecture on AWS with a DynamoDB database to store game data, and a simple JavaScript frontend to allow players to interact with the game, "claiming" regions and viewing and completing challenges while travelling around Sydney's public transport network. 
-                    <br>
-                    <img src="code_images/showdown.png" style="width: 200px;" alt="Screenshot of the Sydney Showdown web app showing the game map and current score">
-                    <img src="code_images/showdown2.png" style="width: 200px;" alt="Screenshot of the Sydney Showdown web app showing the challenge screen">
-                    <br>
-                    <span class="caption">Screenshots of the Sydney Showdown web app, showing the game map and current score, and the challenge screen</span>
+                    <p>
+                        <h3>Fieldwork Data Tool</h3>
+                        This project is a cross-platform tool for fieldwork data glossing and analysis, designed to be a lightweight alternative to FLEx. It is being built on the Electron framework, allowing it to run natively on all major operating systems.
+                        <img src="code_images/fieldtool.png" alt="Screenshot of the Fieldwork Data Tool">
+                        <span class="caption">Screenshot of the tool, showing the lexicon, glossing, and integrated audiovisual support. The text here, in Chocangaca, was imported directly from ELAN, and can be exported to LaTeX, and Word formats.</span>
+                    </p>
+                    <p>
+                        <h2>Personal Projects</h2>
+                        <h3>HomeFile LAN File Transfer</h3>
+                        This is a simple web-based file transfer tool for local area networks, allowing for easy transfer of files between devices on the same network without the data leaving said network using a Node.js as a peer server and the PeerJS library for the WebRTC protocol.
+                        <img src="code_images/homefile.png" alt="Screenshot of the HomeFile LAN File Transfer tool">
+                        <span class="caption">Screenshot of the HomeFile LAN File Transfer tool, showing the file selection and transfer interface.</span>
+                    </p>
+                    <p>
+                        <h3>Megagame Dashboard</h3>
+                        This is a web-based dashboard for megagames, allowing for various game-relevant information such as clocks, newsfeeds, and stats to be displayed to players and synchronised across multiple devices. It is built with a Node.js backend with a PostgreSQL database, and a Vanilla JavaScript frontend. It is used regularly by organisations running megagames in both Sydney and Melbourne.
+                        <img src="code_images/megagame.png" class="lightbox" alt="Screenshot of the Megagame Dashboard Homepage">
+                        <span class="caption">Screenshot of the Megagame Dashboard landing page.</span>
+                        <img src="code_images/megagame2.png" alt="Screenshot of the Megagame Dashboard in use for The Lighthouse (Sydney, 2025)">
+                        <span class="caption">Screenshot of the Megagame Dashboard in use for <i>The Lighthouse</i> by David Little (Sydney, 2025), showing the game clock and custom styling.</span>
+                        <img src="code_images/megagame3.png" alt="Screenshot of the Megagame Dashboard in use for This City Sucks (Melbourne, 2024)">
+                        <span class="caption">Screenshot of the Megagame Dashboard in use for <i>This City Sucks</i> by Chris Melenhorst (Melbourne, 2024), showing the game clock, newsfeed, and custom styling.</span>
+                    </p>
+                    <p>
+                        <h3>Sydney Showdown</h3>
+                        This web-app was developed to manage a Sydney-based adaptation of the <a href="https://en.wikipedia.org/wiki/Jet_Lag:_The_Game#Season_13:_Schengen_Showdown"><i>Jet Lag the Game: Schengen Showdown</i> web series</a>. It uses a serverless Lambda-based architecture on AWS with a DynamoDB database to store game data, and a simple JavaScript frontend to allow players to interact with the game, "claiming" regions and viewing and completing challenges while travelling around Sydney's public transport network. 
+                        <br>
+                        <img src="code_images/showdown.png" style="width: 200px;" alt="Screenshot of the Sydney Showdown web app showing the game map and current score">
+                        <img src="code_images/showdown2.png" style="width: 200px;" alt="Screenshot of the Sydney Showdown web app showing the challenge screen">
+                        <br>
+                        <span class="caption">Screenshots of the Sydney Showdown web app, showing the game map and current score, and the challenge screen</span>
+                    </p>
                 </p>
             </div>
         </div>
-    </div>
+    </main>
+    <footer>Copyright 2025 Carl Bodnaruk</footer>
 </body>
 
 </html>
