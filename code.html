@@ -43,7 +43,7 @@
                     In addition to my research on Himalayan languages, I also have experience in coding and software development. In particular, I have experience in web development, working with JavaScript both client-side and server-side (Node.js), as well as with SQL and AWS architectures. My portfolio includes both personal and academic work, described below. 
                 </p>
                 <p>
-                    Academically, I have used my web development background to create tools for my research, such as <a href="database">the database summarising epistemic marking in Trans-Himalayan languages</a> that developed out of my doctoral research. I have also been working on a fieldwork data glossing and analysis tool as a cross-platform alternative to FLEx, which will be available in early alpha before the end of 2025.
+                    Academically, I have used my web development background to create tools for my research, such as <a href="database">the database summarising epistemic marking in Trans-Himalayan languages</a> that developed out of my doctoral research. I have also been working on a user interface for easier reading of CLDF datasets, and a fieldwork data glossing and analysis tool as a cross-platform alternative to FLEx, which will be available in early alpha before the end of 2025.
                 </p>
                 <p>
                     My personal projects include tools to support large-scale in-person game events known as <a href="https://en.wikipedia.org/wiki/Megagame">megagames</a>, including the interactive dashboard used by <a href="https://www.sydneymegagamers.com/">Sydney Megagamers</a> and <a href="https://www.melbournemegagames.com/">Melbourne Megagames</a> for their events, such as <a href="https://www.youtube.com/watch?v=duCQwTyy0Hc">First Contact 2024</a>.
@@ -57,7 +57,15 @@
                         <span class="caption">Screenshot of the tool, showing the lexicon, glossing, and integrated audiovisual support. The text here, in Chocangaca, was imported directly from ELAN, and can be exported to LaTeX, and Word formats.</span>
                     </p>
                     <p>
-                        <h2>Personal Projects</h2>
+                        <h3>CLDF Explorer</h3>
+                        As part of a recent deep dive into data accessibility practices in Bayesian phylolinguistics, I found that while data was often shared in the <a href="https://cldf.clld.org/">CLDF format</a>, I was unable to find a simple tool to explore large CLDF datasets to aid in the review of language data and cognate judgements. To rectify this and make large CLDF datasets easier to read for a human, CLDF Explorer allows users to open full datasets, browse, filter, and search individual tables, and view links between tables. It is a natively cross platform Electron app, using Vanilla TypeScript and displaying the data using the Tabulator library. An initial alpha version is available at <a href="https://github.com/cbodnaruk/cldf-explorer/releases">at the GitHub repo for the project</a>. Also potentially of wider use is the set of TypeScript types and interfaces for the CLDF standard, specifically the Dataset module.
+                        <img src="code_images/cldfexplorer.png" alt="Screenshot of the CLDF Explorer tool">
+                        <span class="caption">Screenshot of the CLDF Explorer tool, opening data from King et al. (2024)</span>
+
+                    </p>
+                    <h2>Personal Projects</h2>
+                    <p>
+                        
                         <h3>HomeFile LAN File Transfer</h3>
                         This is a simple web-based file transfer tool for local area networks, allowing for easy transfer of files between devices on the same network without the data leaving said network using a Node.js as a peer server and the PeerJS library for the WebRTC protocol.
                         <img src="code_images/homefile.png" alt="Screenshot of the HomeFile LAN File Transfer tool">
