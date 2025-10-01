@@ -90,7 +90,7 @@ const SongBox = (song)=>{
     heading.appendChild(artist)
     songBox.appendChild(spacer)
     songBox.appendChild(heading)
-    songBox.appendChild(trackEmbed(song.id))
+    // songBox.appendChild(trackEmbed(song.id))
     songBox.style.backgroundImage = `url(${song.image})`
 
     songBox.addEventListener("click", ()=>{
@@ -228,6 +228,65 @@ function setPercent(num){
     footer.textContent = `${num}\%`
     footer.style.width = `${num}vw`
 }
+
+const songResult = (song,rank) => {
+    const result = document.createElement("div")
+    result.classList.add("song-result")
+
+    const title = document.createElement("h2")
+    title.textContent = song.title
+
+    const artist = document.createElement("p")
+    artist.textContent = song.artist
+
+    const text = document.createElement("div")
+    text.classList.add("text")
+    text.appendChild(title)
+    text.appendChild(artist)
+
+const art = document.createElement("div")
+art.classList.add("art")
+art.style.backgroundImage = `url(${song.image})`
+art.textContent = rank
+    result.appendChild(art)
+    result.appendChild(text)
+
+    return result
+
+}
+
+function showResults(songs){
+    main.innerHTML = '';
+    document.getElementById("leftright").style.display = 'none';
+    document.querySelector('footer').style.display = 'none';
+
+
+    const controls = document.createElement("div")
+    controls.classList.add("controls")
+
+    
+    const copyButton = document.createElement("button")
+    copyButton.classList.add("copy-button")
+    copyButton.textContent = "Copy ranks to Clipboard"
+    copyButton.addEventListener("click", ()=>{
+        let rankList = ''
+        for (let song of allSongs){
+            let rank = songs.indexOf(song) + 1
+            rankList += `${rank}\n`
+        }
+        navigator.clipboard.writeText(rankList)
+    })
+    controls.append(copyButton)
+    const results = document.createElement("div")
+    results.classList.add("results")
+
+    for (let song of songs){
+        results.appendChild(songResult(song, songs.indexOf(song) + 1))
+    }
+    main.append(controls)
+    main.append(results)
+}
+
 document.addEventListener("DOMContentLoaded", async ()=>{
     // Check for API secret
     if (!localStorage.getItem('apiSecret')){
@@ -248,8 +307,8 @@ document.addEventListener("DOMContentLoaded", async ()=>{
     const sortedSongs = await mergeSort(allSongs.slice()); // Use a copy for sorting
 
     console.log("Sorted Songs:", sortedSongs);
-    main.innerHTML = `<h1>Sorting Complete!</h1><ol>${sortedSongs.map(s => `<li>${s.title} by ${s.artist}</li>`).join('')}</ol>`;
-    document.getElementById("leftright").style.display = 'none';
+    showResults(sortedSongs)
+    localStorage.setItem('sortedSongs', JSON.stringify(sortedSongs));
     localStorage.removeItem('songComparisons'); // Clean up after sorting is complete
 })
 

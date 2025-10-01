@@ -2,6 +2,7 @@ body {
     margin: 0;
     text-align: center;
     font-family: sans-serif;
+    background-color: #e8e8e8;
 }
 
 main {
@@ -61,4 +62,60 @@ footer{
     background-color:#ddd;
     font-size: 0.75rem;
     padding-top: 2px;
+}
+
+.results{
+    max-height: 90vh;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 1vw;
+    margin-top: 1vw;
+}
+
+.song-result{
+    flex-direction: row;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.art{
+    height: 8vh;
+    width: 8vh;
+    color: white;
+    font-weight: bolder;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    background-size: cover;
+    -webkit-text-stroke: #aaa 1px;
+    user-select: none;
+}
+.song-result .text{
+    text-align: left;
+    padding-left: 1vw;
+    max-width: 20vw;
+}
+
+/* From Uiverse.io by ke1221 */ 
+button {
+  color: #090909;
+  padding: 0.7em 1.7em;
+  font-size: 18px;
+  border-radius: 0.5em;
+  background: #e8e8e8;
+  cursor: pointer;
+  border: 1px solid #e8e8e8;
+  transition: all 0.3s;
+  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+}
+
+button:active {
+  color: #666;
+  box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
 }
