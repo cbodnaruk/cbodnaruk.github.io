@@ -205,6 +205,8 @@ async function merge(left, right) {
 
     while (leftIndex < left.length && rightIndex < right.length) {
         const winner = await compareSongs(left[leftIndex], right[rightIndex]);
+        completedSorts++
+        setPercent(Math.round((completedSorts / timeComplexity) * 100))
         if (winner.id === left[leftIndex].id) {
             resultArray.push(left[leftIndex]);
             leftIndex++;
@@ -214,8 +216,7 @@ async function merge(left, right) {
         }
     }
 
-    completedSorts++
-    setPercent(Math.round((completedSorts / timeComplexity) * 100))
+
 
 
     // Concat the remaining elements
