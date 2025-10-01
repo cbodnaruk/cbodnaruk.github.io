@@ -21,6 +21,9 @@ class Song {
 const CLIENT_ID = "b9974f2274fe496d9092f02a4fe8dfcd"
 let CLIENT_SECRET = null
 const PLAYLIST_ID = "4PVIOcNYFmaSaiDqvcdQFF"
+const params = new URLSearchParams(window.location.search);
+const key = params.get('key');
+
 
 let allSongs = []
 let currentSongs = []
@@ -90,7 +93,7 @@ const SongBox = (song)=>{
     heading.appendChild(artist)
     songBox.appendChild(spacer)
     songBox.appendChild(heading)
-    songBox.appendChild(trackEmbed(song.id))
+    // songBox.appendChild(trackEmbed(song.id))
     songBox.style.backgroundImage = `url(${song.image})`
 
     songBox.addEventListener("click", ()=>{
@@ -289,9 +292,13 @@ function showResults(songs){
 
 document.addEventListener("DOMContentLoaded", async ()=>{
     // Check for API secret
-    if (!localStorage.getItem('apiSecret')){
+    if (!localStorage.getItem('apiSecret') || localStorage.getItem('apiSecret').length === 0){
+        if (key){
+            CLIENT_SECRET = key
+        } else {
         CLIENT_SECRET = prompt("Please enter the password I sent here (security thing)")
         localStorage.setItem('apiSecret', CLIENT_SECRET)
+        }
     } else {
         CLIENT_SECRET = localStorage.getItem('apiSecret')
     }
@@ -308,6 +315,8 @@ document.addEventListener("DOMContentLoaded", async ()=>{
 
     console.log("Sorted Songs:", sortedSongs);
     showResults(sortedSongs)
+    localStorage.setItem('sortedSongs', JSON.stringify(sortedSongs));
+    localStorage.removeItem('songComparisons'); // Clean up after sorting is complete
 })
 
     document.addEventListener('keydown', (event) => {
