@@ -10,7 +10,7 @@ class Song {
      * @param {string} params.id - The ID to the song.
      * @param {string} params.image - The album art for the song.
      */
-    constructor(params){
+    constructor(params) {
         this.title = params.title;
         this.artist = params.artist;
         this.id = params.id;
@@ -21,8 +21,7 @@ class Song {
 const CLIENT_ID = "b9974f2274fe496d9092f02a4fe8dfcd"
 let CLIENT_SECRET = null
 const PLAYLIST_ID = "4PVIOcNYFmaSaiDqvcdQFF"
-const params = new URLSearchParams(window.location.search);
-const key = params.get('key');
+
 
 
 let allSongs = []
@@ -37,30 +36,31 @@ let resolveComparison
 const main = document.querySelector("main")
 
 // Pull playlist data from Spotify
-async function getPlaylistData(){
-    let endpoint = "https://api.spotify.com/v1/playlists/"+PLAYLIST_ID+"?fields=tracks.items(track(name,artists(name),id,album(images)))"
+async function getPlaylistData() {
+    let endpoint = "https://api.spotify.com/v1/playlists/" + PLAYLIST_ID + "?fields=tracks.items(track(name,artists(name),id,album(images)))"
     let accessToken = await getAccessToken()
 
     let rawPlaylist = await fetch(endpoint, {
         method: "GET",
         headers: {
             "Authorization": "Bearer " + accessToken.access_token
-        }})
+        }
+    })
     let playlist = await rawPlaylist.json()
 
     let songs = []
-    for (let item of playlist.tracks.items){
-        songs.push(new Song({title:item.track.name, artist:item.track.artists[0].name, id:item.track.id, image:item.track.album.images[0].url}))
+    for (let item of playlist.tracks.items) {
+        songs.push(new Song({ title: item.track.name, artist: item.track.artists[0].name, id: item.track.id, image: item.track.album.images[0].url }))
     }
     let n = songs.length
 
     timeComplexity = Math.log2(n) * n
     console.log(timeComplexity);
-    
+
     return songs
 }
 
-async function getAccessToken(){
+async function getAccessToken() {
     let token = await fetch("https://accounts.spotify.com/api/token", {
         method: "POST",
         headers: {
@@ -72,7 +72,7 @@ async function getAccessToken(){
     return await token.json()
 }
 
-const SongBox = (song)=>{
+const SongBox = (song) => {
     const songBox = document.createElement("div")
     songBox.classList.add("song-box")
 
@@ -96,14 +96,14 @@ const SongBox = (song)=>{
     // songBox.appendChild(trackEmbed(song.id))
     songBox.style.backgroundImage = `url(${song.image})`
 
-    songBox.addEventListener("click", ()=>{
+    songBox.addEventListener("click", () => {
         selectSong(song.id)
     })
 
     return songBox
 }
 
-function selectSong(id){
+function selectSong(id) {
     const winner = currentSongs.find(song => song.id === id);
     const loser = currentSongs.find(song => song.id !== id);
 
@@ -111,7 +111,7 @@ function selectSong(id){
     if (winner && loser) {
         saveComparison(winner, loser);
     }
-    
+
     // If a comparison is waiting to be resolved, resolve it with the winner.
     if (resolveComparison) {
         resolveComparison(winner);
@@ -139,7 +139,7 @@ const trackEmbed = (id) => {
     return embed
 }
 
-function setSongs(songs){
+function setSongs(songs) {
     // Clear the main view
     main.innerHTML = '';
 
@@ -214,7 +214,7 @@ async function merge(left, right) {
         }
     }
 
-    completedSorts ++
+    completedSorts++
     setPercent(Math.round((completedSorts / timeComplexity) * 100))
 
 
@@ -222,17 +222,17 @@ async function merge(left, right) {
     return resultArray
         .concat(left.slice(leftIndex))
         .concat(right.slice(rightIndex));
-    
+
 }
 
 
-function setPercent(num){
+function setPercent(num) {
     const footer = document.querySelector('footer')
     footer.textContent = `${num}\%`
     footer.style.width = `${num}vw`
 }
 
-const songResult = (song,rank) => {
+const songResult = (song, rank) => {
     const result = document.createElement("div")
     result.classList.add("song-result")
 
@@ -247,10 +247,10 @@ const songResult = (song,rank) => {
     text.appendChild(title)
     text.appendChild(artist)
 
-const art = document.createElement("div")
-art.classList.add("art")
-art.style.backgroundImage = `url(${song.image})`
-art.textContent = rank
+    const art = document.createElement("div")
+    art.classList.add("art")
+    art.style.backgroundImage = `url(${song.image})`
+    art.textContent = rank
     result.appendChild(art)
     result.appendChild(text)
 
@@ -258,7 +258,7 @@ art.textContent = rank
 
 }
 
-function showResults(songs){
+function showResults(songs) {
     main.innerHTML = '';
     document.getElementById("leftright").style.display = 'none';
     document.querySelector('footer').style.display = 'none';
@@ -267,13 +267,13 @@ function showResults(songs){
     const controls = document.createElement("div")
     controls.classList.add("controls")
 
-    
+
     const copyButton = document.createElement("button")
     copyButton.classList.add("copy-button")
     copyButton.textContent = "Copy ranks to Clipboard"
-    copyButton.addEventListener("click", ()=>{
+    copyButton.addEventListener("click", () => {
         let rankList = ''
-        for (let song of allSongs){
+        for (let song of allSongs) {
             let rank = songs.indexOf(song) + 1
             rankList += `${rank}\n`
         }
@@ -283,22 +283,23 @@ function showResults(songs){
     const results = document.createElement("div")
     results.classList.add("results")
 
-    for (let song of songs){
+    for (let song of songs) {
         results.appendChild(songResult(song, songs.indexOf(song) + 1))
     }
     main.append(controls)
     main.append(results)
 }
 
-document.addEventListener("DOMContentLoaded", async ()=>{
+document.addEventListener("DOMContentLoaded", async () => {
     // Check for API secret
-    if (!localStorage.getItem('apiSecret') || localStorage.getItem('apiSecret').length === 0){
-        if (key){
-            CLIENT_SECRET = key
-        } else {
+    const params = new URLSearchParams(window.location.search);
+    const keyParam = params.get('key');
+    if (keyParam) {
+        CLIENT_SECRET = keyParam
+    } else if (!localStorage.getItem('apiSecret') || localStorage.getItem('apiSecret').length === 0) {
         CLIENT_SECRET = prompt("Please enter the password I sent here (security thing)")
         localStorage.setItem('apiSecret', CLIENT_SECRET)
-        }
+
     } else {
         CLIENT_SECRET = localStorage.getItem('apiSecret')
     }
@@ -319,10 +320,10 @@ document.addEventListener("DOMContentLoaded", async ()=>{
     localStorage.removeItem('songComparisons'); // Clean up after sorting is complete
 })
 
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'ArrowRight') {
-            selectSong(currentSongs[1].id)
-        } else if (event.key === 'ArrowLeft') {
-            selectSong(currentSongs[0].id)
-        }
-    },true);
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight') {
+        selectSong(currentSongs[1].id)
+    } else if (event.key === 'ArrowLeft') {
+        selectSong(currentSongs[0].id)
+    }
+}, true);
