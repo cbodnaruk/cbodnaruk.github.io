@@ -29,6 +29,7 @@ let currentSongs = []
 let comparisonMap = {}
 let timeComplexity = 0
 let completedSorts = 0
+let lastSaved
 
 // This will be used to pause the sorting algorithm while we wait for user input
 let resolveComparison
@@ -122,6 +123,7 @@ function saveComparison(winner, loser) {
     // Create a canonical key to avoid duplicates (e.g., A_B vs B_A)
     const key = [winner.id, loser.id].sort().join('__');
     comparisonMap[key] = winner.id;
+    lastSaved = key
 
     // Save the entire map to localStorage
     localStorage.setItem('songComparisons', JSON.stringify(comparisonMap));
@@ -233,7 +235,7 @@ function setPercent(num) {
     footer.style.width = `${num}vw`
 }
 
-const songResult = (song, rank) => {
+const songResult = (song, rank = false) => {
     const result = document.createElement("div")
     result.classList.add("song-result")
 
@@ -251,7 +253,7 @@ const songResult = (song, rank) => {
     const art = document.createElement("div")
     art.classList.add("art")
     art.style.backgroundImage = `url(${song.image})`
-    art.textContent = rank
+    if (rank) art.textContent = rank
     result.appendChild(art)
     result.appendChild(text)
 
@@ -295,6 +297,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Check for API secret
     const params = new URLSearchParams(window.location.search);
     const keyParam = params.get('key');
+    const playlistParam = params.get('playlist');
+    if (playlistParam) {
+        PLAYLIST_ID = playlistParam
+    }
     if (keyParam) {
         CLIENT_SECRET = keyParam
     } else if (!localStorage.getItem('apiSecret') || localStorage.getItem('apiSecret').length === 0) {
@@ -328,5 +334,67 @@ document.addEventListener('keydown', (event) => {
 }, true);
 const undoButton = document.getElementById("undo")
 undoButton.addEventListener('click',()=>{
-
+    delete comparisonMap[lastSaved]
+    localStorage.setItem('songComparisons', JSON.stringify(comparisonMap));
+    location.reload()
 })
+
+const resetButton = document.getElementById("reset")
+resetButton.addEventListener('click',()=>{
+    if (confirm("This will erase all your choices, are you sure?")){
+        localStorage.removeItem('songComparisons')
+        location.reload()
+    }
+})
+
+const showChoicesButton = document.getElementById("showChoices")
+showChoicesButton.addEventListener('click',()=>{
+    document.body.appendChild(choicesList())
+})
+
+const choicesList = () =>{
+    const container = document.createElement("div")
+    container.classList.add("choices-list")
+
+    const closeButton = document.createElement("button")
+    closeButton.classList.add("close-button")
+    closeButton.textContent = "X"
+    closeButton.addEventListener("click",()=>{
+        container.remove()
+    })
+    container.appendChild(closeButton)
+    
+    for (let [key, value] of Object.entries(comparisonMap)){
+        let songIDS = key.split("__")
+        let song1 = allSongs.find(song => song.id === songIDS[0])
+        let song2 = allSongs.find(song => song.id === songIDS[1])
+        container.appendChild(choiceListItem(song1, song2,value))
+    }
+    
+    return container
+}
+
+const choiceListItem = (song1, song2, winner) =>{
+    const container = document.createElement("div")
+    container.classList.add("choice-list-item")
+
+    const left = document.createElement("div")
+    left.classList.add("left")
+    if  (winner === song1.id){
+        left.classList.add("winner")
+    }
+    left.appendChild(songResult(song1))
+
+    const right = document.createElement("div")
+    right.classList.add("right")
+    if  (winner === song2.id){
+        right.classList.add("winner")
+    }
+    right.appendChild(songResult(song2))
+
+    container.appendChild(left)
+    container.appendChild(right)
+
+    return container
+
+}
