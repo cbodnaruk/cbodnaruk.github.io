@@ -317,8 +317,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     console.log("Sorted Songs:", sortedSongs);
     showResults(sortedSongs)
-    localStorage.setItem('sortedSongs', JSON.stringify(sortedSongs));
-    localStorage.removeItem('songComparisons'); // Clean up after sorting is complete
 })
 
 document.addEventListener('keydown', (event) => {
@@ -328,3 +326,7 @@ document.addEventListener('keydown', (event) => {
         selectSong(currentSongs[0].id)
     }
 }, true);
+const undoButton = document.getElementById("undo")
+undoButton.addEventListener('click',()=>{
+
+})

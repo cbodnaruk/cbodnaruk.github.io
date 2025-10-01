@@ -3,6 +3,7 @@ body {
     text-align: center;
     font-family: sans-serif;
     background-color: #e8e8e8;
+    overflow: hidden;
 }
 
 main {
@@ -106,7 +107,6 @@ footer{
 button {
   color: #090909;
   padding: 0.7em 1.7em;
-  font-size: 18px;
   border-radius: 0.5em;
   background: #e8e8e8;
   cursor: pointer;
@@ -118,4 +118,20 @@ button {
 button:active {
   color: #666;
   box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+}
+
+
+nav {
+    position: absolute;
+    top: 1rem;
+    right: -1rem;
+    display: flex;
+    gap: 0.5rem;
+    background-color: #e8e8e8;
+    padding: 1rem;
+    padding-right: 2rem;
+    border-radius: 0.5em;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.75rem;
 }
