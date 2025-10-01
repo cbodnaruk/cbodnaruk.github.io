@@ -90,7 +90,7 @@ const SongBox = (song)=>{
     heading.appendChild(artist)
     songBox.appendChild(spacer)
     songBox.appendChild(heading)
-    // songBox.appendChild(trackEmbed(song.id))
+    songBox.appendChild(trackEmbed(song.id))
     songBox.style.backgroundImage = `url(${song.image})`
 
     songBox.addEventListener("click", ()=>{
