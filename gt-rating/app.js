@@ -308,8 +308,6 @@ document.addEventListener("DOMContentLoaded", async ()=>{
 
     console.log("Sorted Songs:", sortedSongs);
     showResults(sortedSongs)
-    localStorage.setItem('sortedSongs', JSON.stringify(sortedSongs));
-    localStorage.removeItem('songComparisons'); // Clean up after sorting is complete
 })
 
     document.addEventListener('keydown', (event) => {
