@@ -20,7 +20,7 @@ class Song {
 
 const CLIENT_ID = "b9974f2274fe496d9092f02a4fe8dfcd"
 let CLIENT_SECRET = null
-const PLAYLIST_ID = "4PVIOcNYFmaSaiDqvcdQFF"
+let PLAYLIST_ID = "4PVIOcNYFmaSaiDqvcdQFF"
 
 
 
@@ -126,7 +126,7 @@ function saveComparison(winner, loser) {
     lastSaved = key
 
     // Save the entire map to localStorage
-    localStorage.setItem('songComparisons', JSON.stringify(comparisonMap));
+    localStorage.setItem(PLAYLIST_ID, JSON.stringify(comparisonMap));
 }
 
 
@@ -313,7 +313,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     // Load saved comparisons from localStorage
-    const savedComparisons = localStorage.getItem('songComparisons');
+    const savedComparisons = localStorage.getItem(PLAYLIST_ID);
     if (savedComparisons) {
         comparisonMap = JSON.parse(savedComparisons);
     }
@@ -335,14 +335,14 @@ document.addEventListener('keydown', (event) => {
 const undoButton = document.getElementById("undo")
 undoButton.addEventListener('click',()=>{
     delete comparisonMap[lastSaved]
-    localStorage.setItem('songComparisons', JSON.stringify(comparisonMap));
+    localStorage.setItem(PLAYLIST_ID, JSON.stringify(comparisonMap));
     location.reload()
 })
 
 const resetButton = document.getElementById("reset")
 resetButton.addEventListener('click',()=>{
     if (confirm("This will erase all your choices, are you sure?")){
-        localStorage.removeItem('songComparisons')
+        localStorage.removeItem(PLAYLIST_ID)
         location.reload()
     }
 })
