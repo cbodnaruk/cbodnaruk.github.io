@@ -312,10 +312,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 
+
     // Load saved comparisons from localStorage
     const savedComparisons = localStorage.getItem(PLAYLIST_ID);
     if (savedComparisons) {
         comparisonMap = JSON.parse(savedComparisons);
+    } else if (localStorage.getItem('songComparisons')) {
+        comparisonMap = JSON.parse(localStorage.getItem('songComparisons'));
+        localStorage.setItem(PLAYLIST_ID, JSON.stringify(comparisonMap));
     }
 
     allSongs = await getPlaylistData()
