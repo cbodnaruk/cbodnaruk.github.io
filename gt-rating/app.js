@@ -317,7 +317,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const savedComparisons = localStorage.getItem(PLAYLIST_ID);
     if (savedComparisons) {
         comparisonMap = JSON.parse(savedComparisons);
-    } else if (localStorage.getItem('songComparisons')) {
+    } else if (localStorage.getItem('songComparisons') && !playlistParam) {
         comparisonMap = JSON.parse(localStorage.getItem('songComparisons'));
         localStorage.setItem(PLAYLIST_ID, JSON.stringify(comparisonMap));
     }
