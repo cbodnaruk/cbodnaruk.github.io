@@ -1,3 +1,4 @@
+import {domtoimage} from "./dom-to-image-more.js"
 
 
 class Song {
@@ -265,6 +266,7 @@ function showResults(songs) {
     main.innerHTML = '';
     document.getElementById("leftright").style.display = 'none';
     document.querySelector('footer').style.display = 'none';
+    main.classList.add("show-results")
 
 
     const controls = document.createElement("div")
@@ -282,6 +284,11 @@ function showResults(songs) {
         }
         navigator.clipboard.writeText(rankList)
     })
+
+    const saveImageButton = document.createElement("button")
+    saveImageButton.classList.add("save-image-button")
+    saveImageButton.textContent = "Show Image"
+
     controls.append(copyButton)
     const results = document.createElement("div")
     results.classList.add("results")
@@ -289,6 +296,27 @@ function showResults(songs) {
     for (let song of songs) {
         results.appendChild(songResult(song, songs.indexOf(song) + 1))
     }
+
+    saveImageButton.addEventListener("click", () => {
+        // results.style.overflowY = 'visible'
+        // document.body.style.overflowY = 'visible'
+        results.style.maxHeight="none"
+        results.style.width="400px"
+        results.style.paddingTop="0"
+        results.style.marginTop="0"
+        results.style.paddingBottom = "50px"
+        domtoimage.toPng(results).then(function (dataUrl) {
+            window.open(dataUrl, '_blank')
+            // results.style.overflowY = 'scroll'
+            // document.body.overflowY = 'hidden'
+            results.style.maxHeight = "90vh"
+            results.style.paddingBottom = "0px"
+            results.style.width=""
+            results.style.paddingTop="1vw"
+            results.style.marginTop="1vw"
+        });
+    })
+    controls.append(saveImageButton)
     main.append(controls)
     main.append(results)
 }
