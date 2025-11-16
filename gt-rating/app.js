@@ -31,6 +31,7 @@ let comparisonMap = {}
 let timeComplexity = 0
 let completedSorts = 0
 let lastSaved
+let comparisonIDS = []
 
 // This will be used to pause the sorting algorithm while we wait for user input
 let resolveComparison
@@ -164,8 +165,45 @@ function compareSongs(song1, song2) {
         const winnerId = comparisonMap[key];
         const winner = winnerId === song1.id ? song1 : song2;
         // Immediately resolve with the saved winner, skipping user input
+
+
         return Promise.resolve(winner);
     }
+
+    // Check for transitive property: if song1 > songX and songX > song2, then song1 > song2 (and vice-versa)
+    // This uses a simplified graph traversal to find a path.
+    const hasPath = (startSong, endSong) => {
+        const visited = new Set();
+        const queue = [startSong.id];
+
+        while (queue.length > 0) {
+            const currentSongId = queue.shift();
+            if (currentSongId === endSong.id) {
+                return true;
+            }
+            if (visited.has(currentSongId)) {
+                continue;
+            }
+            visited.add(currentSongId);
+
+            // Find all songs that 'currentSongId' has beaten or been beaten by
+            for (const key in comparisonMap) {
+                const [idA, idB] = key.split('__').sort();
+                const storedWinnerId = comparisonMap[key];
+
+                if (storedWinnerId === currentSongId) { // currentSongId beat idA or idB
+                    const loserId = (idA === currentSongId) ? idB : idA;
+                    if (!visited.has(loserId)) {
+                        queue.push(loserId);
+                    }
+                }
+            }
+        }
+        return false;
+    };
+
+    if (hasPath(song1, song2)) return Promise.resolve(song1);
+    if (hasPath(song2, song1)) return Promise.resolve(song2);
 
     setSongs([song1, song2]);
     // Return a new promise that will be resolved when the user makes a selection
@@ -228,7 +266,6 @@ async function merge(left, right) {
         .concat(right.slice(rightIndex));
 
 }
-
 
 function setPercent(num) {
     const footer = document.querySelector('footer')
