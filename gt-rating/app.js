@@ -1,4 +1,4 @@
-import {domtoimage} from "./dom-to-image-more.js"
+import { domtoimage } from "./dom-to-image-more.js"
 
 
 class Song {
@@ -32,6 +32,7 @@ let timeComplexity = 0
 let completedSorts = 0
 let lastSaved
 let comparisonIDS = []
+let autoResolveConflicts = true
 
 // This will be used to pause the sorting algorithm while we wait for user input
 let resolveComparison
@@ -106,6 +107,32 @@ const SongBox = (song) => {
     return songBox
 }
 
+const CycleNotice = (paths) => {
+    const notice = document.createElement("div")
+    notice.classList.add("cycle-notice")
+
+    const heading = document.createElement('div')
+    heading.textContent = "🔁 Songs in loop:"
+
+    const path1 = document.createElement('div')
+    for (let song of paths[0]){
+        path1.textContent += `${song} → `
+    }
+    path1.textContent = path1.textContent.slice(0, -3)
+
+    const path2 = document.createElement('div')
+    for (let song of paths[1]){
+        path2.textContent += `${song} → `
+    }
+    path2.textContent = path2.textContent.slice(0, -3)
+
+    notice.appendChild(heading)
+    notice.appendChild(path1)
+    notice.appendChild(path2)
+
+    return notice
+}
+
 function selectSong(id) {
     const winner = currentSongs.find(song => song.id === id);
     const loser = currentSongs.find(song => song.id !== id);
@@ -143,13 +170,16 @@ const trackEmbed = (id) => {
     return embed
 }
 
-function setSongs(songs) {
+function setSongs(songs,cycle) {
     // Clear the main view
     main.innerHTML = '';
 
     currentSongs = songs
     main.appendChild(SongBox(songs[0]))
     main.appendChild(SongBox(songs[1]))
+
+    if (cycle.bool) main.appendChild(CycleNotice(cycle.paths))
+
 }
 
 /**
@@ -170,42 +200,84 @@ function compareSongs(song1, song2) {
         return Promise.resolve(winner);
     }
 
-    // Check for transitive property: if song1 > songX and songX > song2, then song1 > song2 (and vice-versa)
-    // This uses a simplified graph traversal to find a path.
-    const hasPath = (startSong, endSong) => {
-        const visited = new Set();
-        const queue = [startSong.id];
-
-        while (queue.length > 0) {
-            const currentSongId = queue.shift();
-            if (currentSongId === endSong.id) {
-                return true;
+    const buildLookupTable = () => {
+        let lookupTable = {}
+        for (let key in comparisonMap) {
+            let [idA, idB] = key.split('__').sort()
+            let winner = comparisonMap[key]
+            let loser = (idA === winner) ? idB : idA
+            if (!lookupTable[winner]) {
+                lookupTable[winner] = []
             }
-            if (visited.has(currentSongId)) {
-                continue;
-            }
-            visited.add(currentSongId);
+            lookupTable[winner].push(loser)
 
-            // Find all songs that 'currentSongId' has beaten or been beaten by
-            for (const key in comparisonMap) {
-                const [idA, idB] = key.split('__').sort();
-                const storedWinnerId = comparisonMap[key];
+        }
+        return lookupTable
 
-                if (storedWinnerId === currentSongId) { // currentSongId beat idA or idB
-                    const loserId = (idA === currentSongId) ? idB : idA;
-                    if (!visited.has(loserId)) {
-                        queue.push(loserId);
+    }
+
+    let path = []
+    const hasBeaten = (startSong, endSong, lookupTable) => {
+        const visited = new Set()
+        const checkSong = (song) => {
+            path.push(song)
+            if (!visited.has(song)) {
+                if (song === endSong.id) {
+                    return true
+                } else {
+                    visited.add(song)
+                    if (lookupTable[song]){
+                        for (let loser of lookupTable[song]) {
+                            if (checkSong(loser)) {
+                                return true
+                            } else{
+                                path.pop()
+                            }
+                        
+                        }
                     }
                 }
+
             }
+            return false
         }
-        return false;
-    };
+        return checkSong(startSong.id)
 
-    if (hasPath(song1, song2)) return Promise.resolve(song1);
-    if (hasPath(song2, song1)) return Promise.resolve(song2);
+    }
 
-    setSongs([song1, song2]);
+    const lookupTable = buildLookupTable()
+
+    let song1Winner = false
+    let song2Winner = false
+    let pathLog1 = []
+    let pathLog2 = []
+    if (hasBeaten(song1, song2,lookupTable)) {
+        song1Winner = true
+        pathLog1 = path.map(id => allSongs.find(song => song.id === id).title)
+        path = []
+        console.log(pathLog1);
+        
+    }
+    if (hasBeaten(song2, song1,lookupTable)) {
+        song2Winner = true
+        pathLog2 = path.map(id => allSongs.find(song => song.id === id).title)
+        path = []
+        console.log(pathLog2);
+    }
+    let cycle = {paths: [pathLog1, pathLog2], bool: false}
+
+    if (song1Winner && song2Winner){
+        cycle.bool = true
+        console.log(`Resolving ${song1.title} vs ${song2.title}: ${pathLog1.length} vs ${pathLog2.length} (${pathLog1} vs ${pathLog2})`)
+        if (autoResolveConflicts) return Promise.resolve((cycle.paths[0].length < cycle.paths[1].length) ? song1 : song2)
+    }
+
+    if (!song1Winner != !song2Winner) {
+        const winner = song1Winner ? song1 : song2;
+        return Promise.resolve(winner);
+    }
+
+    setSongs([song1, song2],cycle);
     // Return a new promise that will be resolved when the user makes a selection
     // This is where the algorithm "pauses" for user input
     return new Promise(resolve => {
@@ -337,10 +409,10 @@ function showResults(songs) {
     saveImageButton.addEventListener("click", () => {
         // results.style.overflowY = 'visible'
         // document.body.style.overflowY = 'visible'
-        results.style.maxHeight="none"
-        results.style.width="400px"
-        results.style.paddingTop="0"
-        results.style.marginTop="0"
+        results.style.maxHeight = "none"
+        results.style.width = "400px"
+        results.style.paddingTop = "0"
+        results.style.marginTop = "0"
         results.style.paddingBottom = "50px"
         domtoimage.toPng(results).then(function (dataUrl) {
             window.open(dataUrl, '_blank')
@@ -348,9 +420,9 @@ function showResults(songs) {
             // document.body.overflowY = 'hidden'
             results.style.maxHeight = "90vh"
             results.style.paddingBottom = "0px"
-            results.style.width=""
-            results.style.paddingTop="1vw"
-            results.style.marginTop="1vw"
+            results.style.width = ""
+            results.style.paddingTop = "1vw"
+            results.style.marginTop = "1vw"
         });
     })
     controls.append(saveImageButton)
@@ -376,6 +448,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         CLIENT_SECRET = localStorage.getItem('apiSecret')
     }
 
+    document.getElementById('autoresolve').addEventListener('change', () => {
+        autoResolveConflicts = document.getElementById('autoresolve').checked
+        window.location.reload()
+    })
+    autoResolveConflicts = document.getElementById('autoresolve').checked
 
 
     // Load saved comparisons from localStorage
@@ -402,68 +479,85 @@ document.addEventListener('keydown', (event) => {
     }
 }, true);
 const undoButton = document.getElementById("undo")
-undoButton.addEventListener('click',()=>{
+undoButton.addEventListener('click', () => {
     delete comparisonMap[lastSaved]
     localStorage.setItem(PLAYLIST_ID, JSON.stringify(comparisonMap));
     location.reload()
 })
 
 const resetButton = document.getElementById("reset")
-resetButton.addEventListener('click',()=>{
-    if (confirm("This will erase all your choices, are you sure?")){
+resetButton.addEventListener('click', () => {
+    if (confirm("This will erase all your choices, are you sure?")) {
         localStorage.removeItem(PLAYLIST_ID)
         location.reload()
     }
 })
 
 const showChoicesButton = document.getElementById("showChoices")
-showChoicesButton.addEventListener('click',()=>{
-    document.body.appendChild(choicesList())
+showChoicesButton.addEventListener('click', () => {
+    if (!document.querySelector(".choices-list")) document.body.appendChild(choicesList())
 })
 
-const choicesList = () =>{
+const choicesList = () => {
     const container = document.createElement("div")
     container.classList.add("choices-list")
 
     const closeButton = document.createElement("button")
     closeButton.classList.add("close-button")
     closeButton.textContent = "X"
-    closeButton.addEventListener("click",()=>{
+    closeButton.addEventListener("click", () => {
         container.remove()
     })
-    container.appendChild(closeButton)
-    
-    for (let [key, value] of Object.entries(comparisonMap)){
+
+
+    container.append(closeButton)
+
+    for (let [key, value] of Object.entries(comparisonMap)) {
         let songIDS = key.split("__")
         let song1 = allSongs.find(song => song.id === songIDS[0])
         let song2 = allSongs.find(song => song.id === songIDS[1])
-        container.appendChild(choiceListItem(song1, song2,value))
+        container.appendChild(choiceListItem(song1, song2, value))
     }
-    
+
     return container
 }
 
-const choiceListItem = (song1, song2, winner) =>{
+const choiceListItem = (song1, song2, winner) => {
     const container = document.createElement("div")
     container.classList.add("choice-list-item")
 
     const left = document.createElement("div")
     left.classList.add("left")
-    if  (winner === song1.id){
+    if (winner === song1.id) {
         left.classList.add("winner")
     }
     left.appendChild(songResult(song1))
 
     const right = document.createElement("div")
     right.classList.add("right")
-    if  (winner === song2.id){
+    if (winner === song2.id) {
         right.classList.add("winner")
     }
     right.appendChild(songResult(song2))
 
+    const swapButton = document.createElement("button")
+    swapButton.classList.add("swap-button")
+    swapButton.textContent = "🗘"
+    swapButton.addEventListener("click", () => {
+        if (confirm(`Are you sure you want to swap "${song1.title}"${(winner === song1.id)?" (current winner)":""} with "${song2.title}"${(winner === song2.id)?" (current winner)":""}? This might require a large number of new rankings, or cause issues down the line.`)){
+            let key = [song1.id, song2.id].sort().join('__');
+            let loser = (winner === song1.id) ? song2.id : song1.id
+            comparisonMap[key] = loser
+            localStorage.setItem(PLAYLIST_ID, JSON.stringify(comparisonMap));
+            window.location.reload()
+        }
+    })
+
     container.appendChild(left)
+    container.appendChild(swapButton)
     container.appendChild(right)
 
     return container
 
 }
+
