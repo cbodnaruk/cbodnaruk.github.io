@@ -21,7 +21,7 @@ class Song {
 
 const CLIENT_ID = "b9974f2274fe496d9092f02a4fe8dfcd"
 let CLIENT_SECRET = null
-let PLAYLIST_ID = "4PVIOcNYFmaSaiDqvcdQFF"
+let PLAYLIST_ID = "4z3GfdwETzfeoQ8r65qQM7"
 
 
 
